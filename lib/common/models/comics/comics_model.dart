@@ -1,0 +1,20 @@
+library comics_model;
+
+export 'comic_data_wrapper.dart';
+export 'comic_data_container.dart';
+export 'comic.dart';
+export 'text_object.dart';
+export '../shared/url.dart';
+export '../series/series_summary.dart';
+export '../comics/comic_summary.dart';
+export 'comic_date.dart';
+export 'comic_price.dart';
+export '../shared/picture.dart';
+export '../creators/creator_list.dart';
+export '../creators/creator_summary.dart';
+export '../characters/character_list.dart';
+export '../characters/character_summary.dart';
+export '../stories/story_list.dart';
+export '../stories/story_summary.dart';
+export '../events/event_list.dart';
+export '../events/event_summary.dart';
