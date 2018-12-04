@@ -5,6 +5,7 @@ import 'package:marvel/core/blocs/core_bloc.dart';
 import 'package:marvel/core/models/core_item_addition_model.dart';
 import 'package:marvel/core/models/core_view_model.dart';
 import 'package:marvel/core/models/core_item_view_model.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
 class CorePageBloc<T> implements CoreBloc {
@@ -34,11 +35,16 @@ class CorePageBloc<T> implements CoreBloc {
   ///
   /// We're using the `distinct()` transform so that only values that are
   /// in fact a change will be published by the stream.
-  Stream<int> get itemCount => _itemCount.stream.distinct();
+  ValueObservable<int> get itemCount => _itemCount
+      .distinct()
+      // Since we're using the distinct operator, we need to convert back
+      // to a ValueObservable using shareValue.
+      .shareValue(seedValue: 0);
 
   /// This is the stream of items in the core_page. Use this to show the contents
   /// of the core_page when you need all the information in [CoreItemViewModel].
-  Stream<List<CoreItemViewModel>> get coreViewItemModels => _items.stream;
+  ValueObservable<List<CoreItemViewModel>> get coreViewItemModels =>
+      _items.stream;
 
   /// Take care of closing streams.
   void dispose() {

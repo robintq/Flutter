@@ -36,7 +36,7 @@ class PageCardList<T> extends StatelessWidget {
       color: Color(themeColorBk),
       child: StreamBuilder<CoreSliceView>(
           stream: corePagedBloc.slice,
-          initialData: CoreSliceView.empty(),
+          initialData: corePagedBloc.slice.value,
           builder: (context, snapshot) {
             if (corePagedBloc.totalItemCount == 0) {
               return emptyView(

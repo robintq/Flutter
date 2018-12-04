@@ -18,6 +18,7 @@ import 'package:marvel/common/widgets/favourites_button.dart';
 import 'package:marvel/common/widgets/flutter_search_bar/flutter_search_bar.dart';
 import 'package:marvel/common/widgets/theme.dart';
 import 'package:marvel/src/routes.dart';
+import 'package:rxdart/rxdart.dart';
 // import 'package:random_pk/random_pk.dart';
 
 List<Widget> buildScreenCards(Function callbackFunc) {
@@ -370,7 +371,7 @@ AppBar buildPageAppBar(
     BuildContext context,
     String titleText,
     SearchBar searchBar,
-    Stream<int> itemCountStream,
+    ValueObservable<int> itemCount,
     String FavouritePageRoute) {
   return AppBar(
     backgroundColor: Color(themeColor),
@@ -393,8 +394,8 @@ AppBar buildPageAppBar(
     actions: <Widget>[
       searchBar.getSearchAction(context),
       StreamBuilder<int>(
-        stream: itemCountStream,
-        initialData: 0,
+        stream: itemCount,
+        initialData: itemCount.value,
         builder: (context, snapshot) => FavouritesButton(
               itemCount: snapshot.data,
               onPressed: () =>

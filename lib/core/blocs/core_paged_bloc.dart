@@ -39,7 +39,8 @@ class CorePagedBloc implements CoreBloc {
   /// They are identified by their [CorePageView.startIndex].
   final _pagesBeingRequested = Set<int>();
 
-  final _sliceSubject = BehaviorSubject<CoreSliceView>();
+  final _sliceSubject =
+      BehaviorSubject<CoreSliceView>(seedValue: CoreSliceView.empty());
 
   CorePagedBloc(this.coreRepository) {
     createBloc();
@@ -57,7 +58,7 @@ class CorePagedBloc implements CoreBloc {
 
   /// The currently available data, as a slice of the (potentially infinite)
   /// characters.
-  Stream<CoreSliceView> get slice => _sliceSubject.stream;
+  ValueObservable<CoreSliceView> get slice => _sliceSubject.stream;
 
   /// Outputs the [CorePageView.startIndex] given an arbitrary index of
   /// a character.

@@ -6,6 +6,7 @@ import 'package:marvel/common/widgets/ui_elements.dart'
 import 'package:flutter/material.dart';
 import 'package:marvel/core/blocs/core_page_item_bloc.dart';
 import 'package:marvel/core/models/core_item_view_model.dart';
+import 'package:rxdart/rxdart.dart';
 
 /// In this version of [PageCardItemViewBloc], the widget must be a [StatefulWidget]
 /// because it has a [CorePageItemBloc] that it needs to dispose of
@@ -19,7 +20,7 @@ class PageCardItemViewBloc<T> extends StatefulWidget {
   /// items that are already in the core_page differently.
   ///
   /// This will be piped into this widget's [CorePageItemBloc].
-  final Stream<List<CoreItemViewModel>> coreViewItemModels;
+  final ValueObservable<List<CoreItemViewModel>> coreViewItemModels;
   final GestureTapCallback onFavTap;
 
   const PageCardItemViewBloc(
@@ -50,7 +51,7 @@ class _PageCardItemViewBlocState<T> extends State<PageCardItemViewBloc> {
   Widget build(BuildContext context) {
     final favouriteIcon = StreamBuilder<bool>(
       stream: _bloc.isInPageCardItem,
-      initialData: false,
+      initialData: _bloc.isInPageCardItem.value,
       builder: (context, snapshot) => RenderFavouriteIcon(
           widget.onFavTap, widget.isRenderStar, snapshot.data),
     );

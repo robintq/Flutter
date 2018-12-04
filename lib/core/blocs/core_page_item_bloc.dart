@@ -46,7 +46,7 @@ class CorePageItemBloc<T> implements CoreBloc {
 
   /// Tells the [PageCardItem] widget whether its [CardModel] is already
   /// in Favourite_CardModels or not.
-  Stream<bool> get isInPageCardItem => _isInPageCardItemSubject.stream;
+  ValueObservable<bool> get isInPageCardItem => _isInPageCardItemSubject.stream;
 
   /// This business logic component will have shorter lifespan than the app
   /// so we do need to dispose of it properly.
