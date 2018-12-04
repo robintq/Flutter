@@ -118,8 +118,8 @@ class CorePagedBloc implements CoreBloc {
   }
 
   /// Fetches a page of characters from a database. The [CorePageView.startIndex]
-  /// of the returned value will be [index].
-  Future<CorePageView> _requestPage(int index) async {
+  /// of the returned value will be [offset].
+  Future<CorePageView> _requestPage(int offset) async {
     // Simulate network delay.
     //await Future.delayed(const Duration(milliseconds: 300));
     List<CoreItemModel> coreItemModels;
@@ -128,15 +128,15 @@ class CorePagedBloc implements CoreBloc {
     // coreRepository.screenUri = _screenUri;
 
     await coreRepository
-        .fetchPage(_searchText, _coreItemModelsPerPage, index)
+        .fetchPage(_searchText, _coreItemModelsPerPage, offset)
         .then((coreItemListModel) {
       coreItemModels = coreItemListModel.coreItemModels;
       totalItemCount = coreItemListModel.totalItemCount;
     });
 
-    print('index: $index, totalItemCount: $totalItemCount');
+    print('index: $offset, totalItemCount: $totalItemCount');
 
-    return CorePageView(coreItemModels, index);
+    return CorePageView(coreItemModels, offset);
   }
 
   /// Creates a [CoreSliceView] from the current [_pages] and sends it
