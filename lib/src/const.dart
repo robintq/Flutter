@@ -1,4 +1,4 @@
-const marvel_dev_api_url = 'https://gateway.marvel.com/v1/public/';
+const marvel_dev_api_url = 'https://gateway.marvel.com:443/v1/public/';
 const apiKey = '3c682f1279977291600049540ce08532';
 const privateKey = '40fbe9e4fa02efe4d28c788426fac27c71bc056a';
 

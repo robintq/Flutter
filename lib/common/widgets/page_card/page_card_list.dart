@@ -20,7 +20,7 @@ class PageCardList<T> extends StatelessWidget {
 
   //final Stream<CoreSliceView> slice;
   final CorePagedBloc corePagedBloc;
-  final CorePageBloc corePageBloc;
+  final CorePageBloc<T> corePageBloc;
 
   const PageCardList(
       {Key key,
@@ -60,7 +60,7 @@ class PageCardList<T> extends StatelessWidget {
   /// Also sends the [index] to the [corePagedBloc] so it can potentially load
   /// more data.
   Widget _createPageCard(int index, CoreSliceView slice,
-      CorePagedBloc corePagedBloc, CorePageBloc corePageBloc) {
+      CorePagedBloc corePagedBloc, CorePageBloc<T> corePageBloc) {
     if (index == corePagedBloc.totalItemCount) {
       return Container();
     }
@@ -80,7 +80,7 @@ class PageCardList<T> extends StatelessWidget {
 
     // Display data.
     return PageCardItem<T>(
-      coreItemModel: coreItemModel, // as T,
+      cardModel: coreItemModel, // as T,
       corePageBloc: corePageBloc,
       isPageCardItemViewBloc: true,
     );

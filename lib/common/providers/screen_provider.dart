@@ -66,13 +66,22 @@ class ScreenProvider extends StatefulWidget {
   @override
   _ScreenProviderState createState() => _ScreenProviderState();
 
-  static _ScreenProvider of([BuildContext context, bool rebuild = true]) {
-    return rebuild
-        ? (context.inheritFromWidgetOfExactType(_ScreenProvider)
-            as _ScreenProvider)
-        : (context.ancestorWidgetOfExactType(_ScreenProvider)
-            as _ScreenProvider);
+  static Type _typeOf<T>() => T;
+
+  static _ScreenProvider of(BuildContext context) {
+    final type = _typeOf<_ScreenProvider>();
+    _ScreenProvider provider =
+        context.ancestorInheritedElementForWidgetOfExactType(type)?.widget;
+    return provider;
   }
+
+  // static _ScreenProvider of([BuildContext context, bool rebuild = true]) {
+  //   return rebuild
+  //       ? (context.inheritFromWidgetOfExactType(_ScreenProvider)
+  //           as _ScreenProvider)
+  //       : (context.ancestorWidgetOfExactType(_ScreenProvider)
+  //           as _ScreenProvider);
+  // }
 }
 
 class _ScreenProviderState extends State<ScreenProvider> {

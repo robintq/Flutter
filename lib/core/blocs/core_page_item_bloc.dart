@@ -18,7 +18,7 @@ import 'package:rxdart/rxdart.dart';
 /// with each other using streams. In this case, the [CorePageBloc.coreViewItemModels] output
 /// plugs into the [CorePageItemBloc.pageCardItems] input.
 class CorePageItemBloc<T> implements CoreBloc {
-  final _isInPageCardItemSubject = BehaviorSubject<bool>();
+  final _isInPageCardItemSubject = BehaviorSubject<bool>(seedValue: false);
 
   final _pageCardItemsController =
       StreamController<List<CoreItemViewModel<CardModel>>>();
@@ -44,8 +44,8 @@ class CorePageItemBloc<T> implements CoreBloc {
   Sink<List<CoreItemViewModel<CardModel>>> get pageCardItems =>
       _pageCardItemsController.sink;
 
-  /// Tells the [PageCardItem] widget whether its character is already
-  /// in Favourite_characters or not.
+  /// Tells the [PageCardItem] widget whether its [CardModel] is already
+  /// in Favourite_CardModels or not.
   Stream<bool> get isInPageCardItem => _isInPageCardItemSubject.stream;
 
   /// This business logic component will have shorter lifespan than the app

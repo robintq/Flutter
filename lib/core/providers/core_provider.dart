@@ -14,21 +14,22 @@ class CoreProvider<T extends CoreBloc> extends StatefulWidget {
   @override
   _CoreProviderState<T> createState() => _CoreProviderState<T>();
 
-  // static T of<T extends CoreBloc>(BuildContext context) {
-  //   final type = _typeOf<CoreProvider<T>>();
-  //   CoreProvider<T> provider = context.ancestorWidgetOfExactType(type);
-  //   return provider.bloc;
-  // }
+  static Type _typeOf<T>() => T;
 
-  static T of<T extends CoreBloc>([BuildContext context, bool rebuild = true]) {
-    return rebuild
-        ? (context.inheritFromWidgetOfExactType(_CoreProvider) as _CoreProvider)
-            .bloc
-        : (context.ancestorWidgetOfExactType(_CoreProvider) as _CoreProvider)
-            .bloc;
+  static T of<T extends CoreBloc>(BuildContext context) {
+    final type = _typeOf<_CoreProvider<T>>();
+    _CoreProvider<T> provider =
+        context.ancestorInheritedElementForWidgetOfExactType(type)?.widget;
+    return provider?.bloc;
   }
 
-  // static Type _typeOf<T>() => T;
+  // static T of<T extends CoreBloc>([BuildContext context, bool rebuild = true]) {
+  //   return rebuild
+  //       ? (context.inheritFromWidgetOfExactType(_CoreProvider) as _CoreProvider)
+  //           .bloc
+  //       : (context.ancestorWidgetOfExactType(_CoreProvider) as _CoreProvider)
+  //           .bloc;
+  // }
 }
 
 class _CoreProviderState<T> extends State<CoreProvider<CoreBloc>> {

@@ -6,7 +6,7 @@ import 'package:marvel/common/widgets/ui_elements.dart'
     show RenderFavouriteIcon;
 // import 'package:random_pk/random_pk.dart';
 
-/// A helper widget that only builds the [PageCardItem].
+/// A helper widget that only builds the [PageCardItemView].
 ///
 /// The card will be starred when [isInFavourites] is `true`.
 class PageCardItemView extends StatelessWidget {

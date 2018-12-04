@@ -160,6 +160,7 @@ List<Screen> classTypeToScreen(Type classType) {
 
 List<Widget> buildItemDetailLinkList(
     Type classType, ScreenUri screenUri, BuildContext context) {
+  print('buildItemDetailLinkList.classType: $classType');
   final coreProvider = ScreenProvider.of(context);
   VoidCallback action;
   List<Screen> dontShowScreens = classTypeToScreen(classType);

@@ -28,7 +28,7 @@ class FavouriteStoriesPage extends StatelessWidget {
               return ListView(
                   children: snapshot.data
                       .map((item) => PageCardItem<Story>(
-                            coreItemModel: item.coreItemModel, // as Story,
+                            cardModel: item.coreItemModel, // as Story,
                             corePageBloc: coreProvider.favouriteStoriesBloc,
                             isPageCardItemViewBloc: false,
                           ))

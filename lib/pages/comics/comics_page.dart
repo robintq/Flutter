@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:marvel/common/localizations/localization.dart';
-import 'package:marvel/common/models/characters/character.dart';
+import 'package:marvel/common/models/comics/comic.dart';
 import 'package:marvel/common/providers/screen_provider.dart';
 import 'package:marvel/common/widgets/flutter_search_bar/flutter_search_bar.dart';
 import 'package:marvel/common/widgets/page_card/page_card_list.dart';
@@ -8,31 +8,31 @@ import 'package:marvel/common/widgets/page_card/page_card_list.dart';
 import 'package:marvel/common/widgets/ui_elements.dart';
 import 'package:marvel/src/routes.dart';
 
-class CharactersPage extends StatefulWidget {
+class ComicsPage extends StatefulWidget {
   @override
-  _CharactersPageState createState() {
-    return new _CharactersPageState();
+  _ComicsPageState createState() {
+    return new _ComicsPageState();
   }
 }
 
-class _CharactersPageState extends State<CharactersPage> {
+class _ComicsPageState extends State<ComicsPage> {
   SearchBar searchBar;
 
   AppBar buildAppBar(BuildContext context) {
     return buildPageAppBar(
         context,
-        MarvelLocalizations.of(context).charactersTitle.toUpperCase(),
+        MarvelLocalizations.of(context).comicsTitle.toUpperCase(),
         searchBar,
-        ScreenProvider.of(context).favouriteCharactersBloc.itemCount,
-        AppRoutes.favouriteCharacters);
+        ScreenProvider.of(context).favouriteComicsBloc.itemCount,
+        AppRoutes.favouriteComics);
   }
 
   void onSubmitted(String value) {
     var coreProvider = ScreenProvider.of(context);
-    coreProvider.charactersBloc.search.add(value);
+    coreProvider.comicsBloc.search.add(value);
   }
 
-  _CharactersPageState() {
+  _ComicsPageState() {
     searchBar = new SearchBar(
       inBar: true,
       buildDefaultAppBar: buildAppBar,
@@ -48,15 +48,16 @@ class _CharactersPageState extends State<CharactersPage> {
   @override
   Widget build(BuildContext context) {
     var coreProvider = ScreenProvider.of(context);
-    coreProvider.charactersBloc.coreRepository.screenUri =
+    coreProvider.comicsBloc.coreRepository.screenUri =
         coreProvider.screenUri.value;
+
+    print('coreProvider.screenUri.value: ${coreProvider.screenUri.value}');
 
     return Scaffold(
       appBar: searchBar.build(context),
-      body: PageCardList<Character>(
-        //slice: coreProvider.charactersBloc.slice,
-        corePagedBloc: coreProvider.charactersBloc,
-        corePageBloc: coreProvider.favouriteCharactersBloc,
+      body: PageCardList<Comic>(
+        corePagedBloc: coreProvider.comicsBloc,
+        corePageBloc: coreProvider.favouriteComicsBloc,
       ),
     );
   }

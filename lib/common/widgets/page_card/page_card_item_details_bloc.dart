@@ -4,51 +4,41 @@ import 'dart:ui' as ui show Image;
 import 'package:flutter/material.dart';
 import 'package:marvel/common/models/card_model.dart';
 import 'package:marvel/common/models/marvel_model.dart';
+import 'package:marvel/common/providers/screen_provider.dart';
 import 'package:marvel/common/utils/marvel_helper.dart';
 import 'package:marvel/common/utils/network_image_load_callback.dart';
 import 'package:marvel/common/widgets/theme.dart';
 import 'package:marvel/common/widgets/ui_elements.dart';
+import 'package:marvel/core/blocs/core_page_bloc.dart';
 import 'package:marvel/core/blocs/core_page_item_bloc.dart';
-import 'package:marvel/core/models/core_item_view_model.dart';
+import 'package:marvel/core/models/core_item_addition_model.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PageCardItemDetailsBloc<T> extends StatefulWidget {
   /// The item to be rendered.
-  final CardModel coreItemModel;
-  final GestureTapCallback onTap;
+  final CorePageBloc<T> favouritesBloc;
 
-  /// The observable list of items in the core_page. This is used to render
-  /// items that are already in the core_page differently.
-  ///
-  /// This will be piped into this widget's [CorePageItemBloc].
-  final Stream<List<CoreItemViewModel<CardModel>>> coreViewItemModels;
-
-  const PageCardItemDetailsBloc(
-      {Key key,
-      @required this.coreItemModel,
-      @required this.onTap,
-      @required this.coreViewItemModels})
-      : super(key: key);
+  PageCardItemDetailsBloc({
+    Key key,
+    @required this.favouritesBloc,
+  }) : super(key: key);
 
   @override
-  _PageCardItemDetailsBlocState createState() =>
-      _PageCardItemDetailsBlocState(classType: T);
+  _PageCardItemDetailsBlocState<T> createState() =>
+      _PageCardItemDetailsBlocState<T>();
 }
 
 class _PageCardItemDetailsBlocState<T> extends State<PageCardItemDetailsBloc>
     with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  CardModel _cardModel;
+  GestureTapCallback _onTap;
+
   AnimationController _controller;
   Animation<double> _contentsOpacity;
   Animation<Offset> _bgImagePosition;
   bool _showBgImageOnly = false;
-
-  final Type classType;
-
-  _PageCardItemDetailsBlocState({
-    @required this.classType,
-  });
 
   /// The business logic component for the [PageCardItemDetailsBloc] widget.
   ///
@@ -74,10 +64,17 @@ class _PageCardItemDetailsBlocState<T> extends State<PageCardItemDetailsBloc>
 
   @override
   Widget build(BuildContext context) {
+    var coreProvider = ScreenProvider.of(context);
+    _cardModel = coreProvider.coreItemBloc.coreItemModel;
+    _createBloc();
+
+    // print('CoreItemAdditionModel<T>: ${T}');
+    _onTap = () => widget.favouritesBloc.coreItemAdditionModel
+        .add(CoreItemAdditionModel<T>(coreProvider.coreItemBloc.coreItemModel));
+
     _context = context;
 
-    imageUrl = MarvelHelper.getImageUrl(
-        widget.coreItemModel.path, widget.coreItemModel.extension,
+    imageUrl = MarvelHelper.getImageUrl(_cardModel.path, _cardModel.extension,
         imageSize: ImageVariant.portrait_uncanny);
 
     NetworkImageLoadCallback.load(context, imageUrl, imageLoaded);
@@ -148,7 +145,7 @@ class _PageCardItemDetailsBlocState<T> extends State<PageCardItemDetailsBloc>
         padding: EdgeInsets.fromLTRB(15.0, 72.0, 15.0, 10.0),
         child: Column(
           children: <Widget>[
-            buildName(textTheme, widget.coreItemModel.name),
+            buildName(textTheme, _cardModel.name),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -165,7 +162,7 @@ class _PageCardItemDetailsBlocState<T> extends State<PageCardItemDetailsBloc>
   List<Widget> _getContentDetails(TextTheme textTheme) {
     List<Widget> children = [];
 
-    children.add(buildDescription(textTheme, widget.coreItemModel.description
+    children.add(buildDescription(textTheme, _cardModel.description
         // + description +
         // description +
         // description +
@@ -174,8 +171,7 @@ class _PageCardItemDetailsBlocState<T> extends State<PageCardItemDetailsBloc>
         ));
     children.add(Divider()); //const SizedBox(height: 8.0),
     // print('Type: ${classType}');
-    children.addAll(buildItemDetailLinkList(
-        classType, widget.coreItemModel.screenUri, _context));
+    children.addAll(buildItemDetailLinkList(T, _cardModel.screenUri, _context));
 
     return children;
   }
@@ -197,7 +193,7 @@ class _PageCardItemDetailsBlocState<T> extends State<PageCardItemDetailsBloc>
             onPressed: () => _showHideBgImage(),
           ),
           GestureDetector(
-            onTap: widget.onTap,
+            onTap: _onTap,
             child: StreamBuilder<bool>(
               stream: _bloc.isInPageCardItem,
               initialData: false,
@@ -223,8 +219,10 @@ class _PageCardItemDetailsBlocState<T> extends State<PageCardItemDetailsBloc>
   /// Create the [CorePageItemBloc] and pipe the stream of coreViewItemModels
   /// into its [CorePageItemBloc.pageCardItems] input.
   void _createBloc() {
-    _bloc = CorePageItemBloc<T>(widget.coreItemModel);
-    _subscription = widget.coreViewItemModels.listen(_bloc.pageCardItems.add);
+    print('cardModel: ${_cardModel.name}');
+    _bloc = CorePageItemBloc<T>(_cardModel);
+    _subscription = widget.favouritesBloc.coreViewItemModels
+        .listen(_bloc.pageCardItems.add);
   }
 
   /// Remember: widgets can change from above the [State] at the framework's
@@ -241,6 +239,8 @@ class _PageCardItemDetailsBlocState<T> extends State<PageCardItemDetailsBloc>
 
   @override
   void dispose() {
+    print('PageCardItemDetailsBloc dispose.');
+
     _controller.dispose();
     _disposeBloc();
     _isImageLoaded.close();
@@ -252,8 +252,6 @@ class _PageCardItemDetailsBlocState<T> extends State<PageCardItemDetailsBloc>
   @override
   void initState() {
     super.initState();
-
-    _createBloc();
 
     _controller = AnimationController(
       vsync: this,

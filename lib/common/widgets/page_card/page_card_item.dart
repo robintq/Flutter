@@ -9,13 +9,13 @@ import 'package:marvel/core/models/core_item_addition_model.dart';
 import 'package:meta/meta.dart';
 
 class PageCardItem<T> extends StatelessWidget {
-  final CardModel coreItemModel;
+  final CardModel cardModel;
   final CorePageBloc<T> corePageBloc;
   final bool isPageCardItemViewBloc;
 
   PageCardItem({
     Key key,
-    @required this.coreItemModel,
+    @required this.cardModel,
     @required this.corePageBloc,
     @required this.isPageCardItemViewBloc,
   }) : super(key: key);
@@ -27,27 +27,27 @@ class PageCardItem<T> extends StatelessWidget {
     final coreItemBloc = coreProvider.coreItemBloc;
     // corePageBloc.coreViewItemModels.first.then(
     //     (value) => print('corePageBloc.coreViewItemModels.first: $value'));
-    //print('corePageBloc: ${}');
+    // print('PageCardItem<T>: ${T}');
     final onFavTap = () => corePageBloc.coreItemAdditionModel
-        .add(CoreItemAdditionModel<T>(coreItemModel));
+        .add(CoreItemAdditionModel<T>(cardModel));
     final pageCardItemView = isPageCardItemViewBloc
         ? PageCardItemViewBloc(
-            key: Key(coreItemModel.id.toString()),
-            coreItemModel: coreItemModel,
+            key: Key(cardModel.id.toString()),
+            coreItemModel: cardModel,
             isRenderStar: true,
             onFavTap: onFavTap,
             coreViewItemModels: corePageBloc.coreViewItemModels,
           )
         : PageCardItemView(
-            cardModel: coreItemModel,
+            cardModel: cardModel,
             isRenderStar: false,
             onFavTap: onFavTap,
           );
     return GestureDetector(
       onTap: () {
-        coreItemBloc.coreItemModelAdd(coreItemModel);
+        coreItemBloc.coreItemModelAdd(cardModel);
         Navigator.pushNamed(
-          context, getItemDetailRouteByType(T, coreItemModel.id),
+          context, getItemDetailRouteByType(T, cardModel.id),
           // '${AppRoutes.characterDetails}/${coreItemModel1.id}',
         );
       },

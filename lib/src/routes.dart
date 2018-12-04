@@ -8,20 +8,19 @@ import 'package:marvel/common/models/series/series.dart';
 import 'package:marvel/common/models/stories/story.dart';
 import 'package:marvel/common/providers/screen_provider.dart';
 import 'package:marvel/common/widgets/page_card/page_card_item_details_bloc.dart';
-import 'package:marvel/core/models/core_item_addition_model.dart';
-import 'package:marvel/modules/characters/characters_page.dart';
-import 'package:marvel/modules/characters/favourite_characters_page.dart';
-import 'package:marvel/modules/comics/comics_page.dart';
-import 'package:marvel/modules/comics/favourite_comics_page.dart';
-import 'package:marvel/modules/creators/creators_page.dart';
-import 'package:marvel/modules/creators/favourite_creators_page.dart';
-import 'package:marvel/modules/events/events_page.dart';
-import 'package:marvel/modules/events/favourite_events_page.dart';
-import 'package:marvel/modules/home_page.dart';
-import 'package:marvel/modules/series/favourite_series_page.dart';
-import 'package:marvel/modules/series/series_page.dart';
-import 'package:marvel/modules/stories/favourite_stories_page.dart';
-import 'package:marvel/modules/stories/stories_page.dart';
+import 'package:marvel/pages/characters/characters_page.dart';
+import 'package:marvel/pages/characters/favourite_characters_page.dart';
+import 'package:marvel/pages/comics/comics_page.dart';
+import 'package:marvel/pages/comics/favourite_comics_page.dart';
+import 'package:marvel/pages/creators/creators_page.dart';
+import 'package:marvel/pages/creators/favourite_creators_page.dart';
+import 'package:marvel/pages/events/events_page.dart';
+import 'package:marvel/pages/events/favourite_events_page.dart';
+import 'package:marvel/pages/home_page.dart';
+import 'package:marvel/pages/series/favourite_series_page.dart';
+import 'package:marvel/pages/series/series_page.dart';
+import 'package:marvel/pages/stories/favourite_stories_page.dart';
+import 'package:marvel/pages/stories/stories_page.dart';
 
 class AppRoutes {
   static const home = "/";
@@ -171,91 +170,40 @@ class AppRoutes {
           // print('itemId: $itemId');
 
           route = MaterialPageRoute(builder: (BuildContext context) {
-            final coreProvider = ScreenProvider.of(context);
-            final coreItemModel =
-                coreProvider.coreItemBloc.coreItemModel; // as Character;
             // final coreItemModel =
             //     coreProvider.charactersBloc.slice.elementById(itemId);
             // print(coreItemModel);
 
             return PageCardItemDetailsBloc<Character>(
-              coreItemModel: coreItemModel,
-              onTap: () => coreProvider
-                  .favouriteCharactersBloc.coreItemAdditionModel
-                  .add(CoreItemAdditionModel<Character>(coreItemModel)),
-              coreViewItemModels:
-                  coreProvider.favouriteCharactersBloc.coreViewItemModels,
-            );
+                favouritesBloc:
+                    ScreenProvider.of(context).favouriteCharactersBloc);
           });
         } else if (routeName.contains(AppRoutes.comicDetails)) {
           route = MaterialPageRoute(builder: (BuildContext context) {
-            var coreProvider = ScreenProvider.of(context);
-            final coreItemModel = coreProvider.coreItemBloc.coreItemModel;
-
             return PageCardItemDetailsBloc<Comic>(
-              coreItemModel: coreItemModel,
-              onTap: () => coreProvider
-                  .favouriteComicsBloc.coreItemAdditionModel
-                  .add(CoreItemAdditionModel<Comic>(coreItemModel)),
-              coreViewItemModels:
-                  coreProvider.favouriteComicsBloc.coreViewItemModels,
-            );
+                favouritesBloc: ScreenProvider.of(context).favouriteComicsBloc);
           });
         } else if (routeName.contains(AppRoutes.creatorDetails)) {
           route = MaterialPageRoute(builder: (BuildContext context) {
-            var coreProvider = ScreenProvider.of(context);
-            final coreItemModel = coreProvider.coreItemBloc.coreItemModel;
-
             return PageCardItemDetailsBloc<Creator>(
-              coreItemModel: coreItemModel,
-              onTap: () => coreProvider
-                  .favouriteCreatorsBloc.coreItemAdditionModel
-                  .add(CoreItemAdditionModel<Creator>(coreItemModel)),
-              coreViewItemModels:
-                  coreProvider.favouriteCreatorsBloc.coreViewItemModels,
-            );
+                favouritesBloc:
+                    ScreenProvider.of(context).favouriteCreatorsBloc);
           });
         } else if (routeName.contains(AppRoutes.eventDetails)) {
           route = MaterialPageRoute(builder: (BuildContext context) {
-            var coreProvider = ScreenProvider.of(context);
-            final coreItemModel = coreProvider.coreItemBloc.coreItemModel;
-
             return PageCardItemDetailsBloc<Event>(
-              coreItemModel: coreItemModel,
-              onTap: () => coreProvider
-                  .favouriteEventsBloc.coreItemAdditionModel
-                  .add(CoreItemAdditionModel<Event>(coreItemModel)),
-              coreViewItemModels:
-                  coreProvider.favouriteEventsBloc.coreViewItemModels,
-            );
+                favouritesBloc: ScreenProvider.of(context).favouriteEventsBloc);
           });
         } else if (routeName.contains(AppRoutes.seriesDetails)) {
           route = MaterialPageRoute(builder: (BuildContext context) {
-            var coreProvider = ScreenProvider.of(context);
-            final coreItemModel = coreProvider.coreItemBloc.coreItemModel;
-
             return PageCardItemDetailsBloc<Series>(
-              coreItemModel: coreItemModel,
-              onTap: () => coreProvider
-                  .favouriteSeriesBloc.coreItemAdditionModel
-                  .add(CoreItemAdditionModel<Series>(coreItemModel)),
-              coreViewItemModels:
-                  coreProvider.favouriteSeriesBloc.coreViewItemModels,
-            );
+                favouritesBloc: ScreenProvider.of(context).favouriteSeriesBloc);
           });
         } else if (routeName.contains(AppRoutes.storyDetails)) {
           route = MaterialPageRoute(builder: (BuildContext context) {
-            var coreProvider = ScreenProvider.of(context);
-            final coreItemModel = coreProvider.coreItemBloc.coreItemModel;
-
             return PageCardItemDetailsBloc<Story>(
-              coreItemModel: coreItemModel,
-              onTap: () => coreProvider
-                  .favouriteStoriesBloc.coreItemAdditionModel
-                  .add(CoreItemAdditionModel<Story>(coreItemModel)),
-              coreViewItemModels:
-                  coreProvider.favouriteStoriesBloc.coreViewItemModels,
-            );
+                favouritesBloc:
+                    ScreenProvider.of(context).favouriteStoriesBloc);
           });
         } else if (routeName.contains(AppRoutes.characterComics)) {
           print('AppRoutes.characterComics: ${AppRoutes.characterComics}');

@@ -72,7 +72,7 @@ class StoriesRepository extends CoreRepository {
   }
 
   String apiUrl(String nameStartsWith, int limit, int offset) {
-    String url = MarvelHelper.getApiUrl(Screen.Comics, _screenUri);
+    String url = MarvelHelper.getApiUrl(Screen.Stories, _screenUri);
     if (nameStartsWith.trim().length > 0)
       url += '&nameStartsWith=$nameStartsWith';
     url += '&orderBy=-modified&limit=$limit&offset=$offset';

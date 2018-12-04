@@ -109,7 +109,7 @@ class CorePagedBloc implements CoreBloc {
   }
 
   /// Handles arrival of a new [page] from the network. Will call
-  /// [_sendNewSlice].
+  /// [_handleNewPage].
   void _handleNewPage(CorePageView page, int index) {
     _pages[index] = page;
     _pagesBeingRequested.remove(index);

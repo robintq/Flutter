@@ -67,6 +67,7 @@ class CharactersRepository extends CoreRepository {
   }
 
   String apiUrl(String nameStartsWith, int limit, int offset) {
+    print('CharactersRepository._screenUri: ${_screenUri}');
     String url = MarvelHelper.getApiUrl(Screen.Characters, _screenUri);
     if (nameStartsWith.trim().length > 0)
       url += '&nameStartsWith=$nameStartsWith';

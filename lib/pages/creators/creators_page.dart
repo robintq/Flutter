@@ -51,6 +51,8 @@ class _CreatorsPageState extends State<CreatorsPage> {
     coreProvider.creatorsBloc.coreRepository.screenUri =
         coreProvider.screenUri.value;
 
+    print('coreProvider.screenUri.value: ${coreProvider.screenUri.value}');
+
     return Scaffold(
       appBar: searchBar.build(context),
       body: PageCardList<Creator>(
